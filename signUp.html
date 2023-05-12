@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="https://i.postimg.cc/1Rd1Bj5s/logo.png" type="image/x-icon">
+    <!-- style css -->
+    <link rel="stylesheet" href="style.css">
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <!-- navigation -->
+    <div class="nav">
+        <div class="logo">
+            <a href="index.html">
+                <img src="https://i.postimg.cc/1Rd1Bj5s/logo.png" alt="logo">
+                <h1>Sovann</h1>
+            </a>
+        </div>
+        <div class="menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="menuButton">
+            <a href="signIn.html"><button id="signIn">Log In</button></a>
+            <a href="signUp.html"><button id="signUp">Sign Up</button></a>
+        </div>
+    </div>
+
+    <section class="signInHero">
+        <div class="signLogo">
+            <a href="index.html">
+                <img src="https://i.postimg.cc/1Rd1Bj5s/logo.png" alt="logo">
+                <h1>Sovann</h1>
+            </a>
+        </div>
+        <div class="form">
+            <h1>Register Here</h1>
+            <form class="signup-form">
+                <div class="input-field">
+                  <i class="fas fa-user"></i>
+                  <input type="text" placeholder="Full Name" id="full_name">
+                </div>
+                <div class="input-field">
+                  <i class="fas fa-envelope"></i>
+                  <input type="email" placeholder="Email" id="email">
+                </div>
+                <div class="input-field">
+                    <input type="password" placeholder="Password" id="password">
+                    <span class="toggle-password" onclick="togglePasswordVisibility('password')">
+                      <i class="fas fa-eye"></i>
+                    </span>
+                  </div>
+                  <div class="input-field">
+                    <input type="password" placeholder="Confirm Password" id="com_password">
+                    <span class="toggle-password" onclick="togglePasswordVisibility('com_password')">
+                      <i class="fas fa-eye"></i>
+                    </span>
+                  </div>                                
+                <button type="submit" class="signup-btn" id="submit-btn">Signup</button>
+              </form>
+                           
+        </div>
+    </section>
+
+    <!-- footer -->
+    <section class="footer">
+        <div class="f-top">
+            <a href="index.html">
+                <img src="https://i.postimg.cc/1Rd1Bj5s/logo.png" alt="f-logo">
+            </a>
+            <p>
+                Morm Leapsovann is a 17-year-old individual who is making their way through life with a strong sense of determination and curiosity. Whether they are exploring new ideas, pursuing their passions, or simply enjoying the simple pleasures of everyday life, Morm is always eager to learn and grow as a person.
+            </p>
+        </div>
+        <div class="f-bottom">
+            <p>
+                © 2023 <a href="index.html">@Morm Leapsovann.</a> All rights reserved.
+            </p>
+        </div>
+    </section>
+
+    <!-- script -->
+    <script src="script.js"></script>
+    <script>
+        document.querySelector('.signup-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission from refreshing the page
+
+            // Call the signup function here
+            signUp();
+            });
+            function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            var eyeIcon = document.querySelector('#' + inputId + ' + .toggle-password i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+            }
+
+
+
+
+            
+        function signUp() {
+            // Get the input field values
+            var fullName = document.getElementById('full_name').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('com_password').value;
+
+            // Perform input validation (optional)
+            if (fullName === '' || email === '' || password === '' || confirmPassword === '') {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            // Perform the signup request to the server (replace this with your server-side logic)
+            // You can use JavaScript's Fetch API or any other library to make an HTTP request to your server
+            // Example using Fetch API
+            fetch('/signup', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                fullName: fullName,
+                email: email,
+                password: password
+                })
+            })
+            .then(function(response) {
+                if (response.ok) {
+                // Signup successful, perform necessary actions (e.g., redirect to another page)
+                alert('Signup successful');
+                window.location.href = 'success.html';
+                } else {
+                // Signup failed, handle the error (e.g., display an error message)
+                alert('Signup failed');
+                }
+            })
+            .catch(function(error) {
+                // Handle any network or server errors
+                console.error('Error:', error);
+            });
+            }
+
+    </script>
+</body>
+</html>
