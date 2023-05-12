@@ -46,29 +46,23 @@
         </div>
         <div class="form">
             <h1>Register Here</h1>
-            <form class="signup-form">
+            <form class="signup-form" action="signUp.php" method="POST">
                 <div class="input-field">
-                  <i class="fas fa-user"></i>
-                  <input type="text" placeholder="Full Name" id="full_name">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Full Name" name="full_name">
                 </div>
                 <div class="input-field">
-                  <i class="fas fa-envelope"></i>
-                  <input type="email" placeholder="Email" id="email">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="Email" name="email">
                 </div>
                 <div class="input-field">
-                    <input type="password" placeholder="Password" id="password">
-                    <span class="toggle-password" onclick="togglePasswordVisibility('password')">
-                      <i class="fas fa-eye"></i>
-                    </span>
-                  </div>
-                  <div class="input-field">
-                    <input type="password" placeholder="Confirm Password" id="com_password">
-                    <span class="toggle-password" onclick="togglePasswordVisibility('com_password')">
-                      <i class="fas fa-eye"></i>
-                    </span>
-                  </div>                                
+                    <input type="password" placeholder="Password" name="password">
+                </div>
+                <div class="input-field">
+                    <input type="password" placeholder="Confirm Password" name="com_password">
+                </div>
                 <button type="submit" class="signup-btn" id="submit-btn">Signup</button>
-              </form>
+            </form>            
                            
         </div>
     </section>
