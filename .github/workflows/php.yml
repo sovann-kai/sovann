@@ -19,10 +19,11 @@ jobs:
           cp -R docs/. dist/
           echo "Website deployed successfully!"
         env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINZ0u77EzbkTM+Nl/axTrQOH0AYnYpUhVL1HN+9XlXD9 sovanns25b@gmail.com"
+
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token:  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINZ0u77EzbkTM+Nl/axTrQOH0AYnYpUhVL1HN+9XlXD9 sovanns25b@gmail.com"
           publish_dir: ./dist
