@@ -18,17 +18,17 @@
     <!-- navigation -->
     <div class="nav">
         <div class="logo">
-            <a href="index.html">
+            <a href="index.php">
                 <img src="https://i.postimg.cc/1Rd1Bj5s/logo.png" alt="logo">
                 <h1>Sovann</h1>
             </a>
         </div>
         <div class="menu">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#services">Services</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="index.php#about">About</a></li>
+                <li><a href="index.php#services">Services</a></li>
+                <li><a href="index.php#contact">Contact</a></li>
             </ul>
         </div>
         <div class="menuButton">
@@ -39,30 +39,40 @@
 
     <section class="signInHero">
         <div class="signLogo">
-            <a href="index.html">
+            <a href="index.php">
                 <img src="https://i.postimg.cc/1Rd1Bj5s/logo.png" alt="logo">
                 <h1>Sovann</h1>
             </a>
         </div>
         <div class="form">
             <h1>Register Here</h1>
-            <form class="signup-form" action="signUp.php" method="POST">
+            <form class="signup-form" action="signUp.php" method="post">
+                <div class="input-field">
+                  <i class="fas fa-user"></i>
+                  <input type="text" placeholder="Full Name" id="full_name" name="full_name">
+                </div>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Full Name" name="full_name">
+                    <input type="text" placeholder="Username" id="username" name="username">
+                  </div>
+                <div class="input-field">
+                  <i class="fas fa-envelope"></i>
+                  <input type="email" placeholder="Email" id="email" name="email">
                 </div>
                 <div class="input-field">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" placeholder="Email" name="email">
+                  <input type="password" placeholder="Password" id="password" name="password">
+                  <span class="toggle-password" onclick="togglePasswordVisibility('password')">
+                    <i class="fas fa-eye"></i>
+                  </span>
                 </div>
                 <div class="input-field">
-                    <input type="password" placeholder="Password" name="password">
-                </div>
-                <div class="input-field">
-                    <input type="password" placeholder="Confirm Password" name="com_password">
+                  <input type="password" placeholder="Confirm Password" id="com_password" name="com_password">
+                  <span class="toggle-password" onclick="togglePasswordVisibility('com_password')">
+                    <i class="fas fa-eye"></i>
+                  </span>
                 </div>
                 <button type="submit" class="signup-btn" id="submit-btn">Signup</button>
-            </form>            
+              </form>                        
                            
         </div>
     </section>
@@ -70,7 +80,7 @@
     <!-- footer -->
     <section class="footer">
         <div class="f-top">
-            <a href="index.html">
+            <a href="index.php">
                 <img src="https://i.postimg.cc/1Rd1Bj5s/logo.png" alt="f-logo">
             </a>
             <p>
@@ -79,7 +89,7 @@
         </div>
         <div class="f-bottom">
             <p>
-                © 2023 <a href="index.html">@Morm Leapsovann.</a> All rights reserved.
+                © 2023 <a href="index.php">@Morm Leapsovann.</a> All rights reserved.
             </p>
         </div>
     </section>
@@ -87,78 +97,20 @@
     <!-- script -->
     <script src="script.js"></script>
     <script>
-        document.querySelector('.signup-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission from refreshing the page
+        function togglePasswordVisibility(inputId) {
+        var passwordInput = document.getElementById(inputId);
+        var eyeIcon = document.querySelector('#' + inputId + ' + .toggle-password i');
 
-            // Call the signup function here
-            signUp();
-            });
-            function togglePasswordVisibility(inputId) {
-            var passwordInput = document.getElementById(inputId);
-            var eyeIcon = document.querySelector('#' + inputId + ' + .toggle-password i');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
-            }
-            }
-
-
-
-
-            
-        function signUp() {
-            // Get the input field values
-            var fullName = document.getElementById('full_name').value;
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('com_password').value;
-
-            // Perform input validation (optional)
-            if (fullName === '' || email === '' || password === '' || confirmPassword === '') {
-                alert('Please fill in all fields');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
-
-            // Perform the signup request to the server (replace this with your server-side logic)
-            // You can use JavaScript's Fetch API or any other library to make an HTTP request to your server
-            // Example using Fetch API
-            fetch('/signup', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                fullName: fullName,
-                email: email,
-                password: password
-                })
-            })
-            .then(function(response) {
-                if (response.ok) {
-                // Signup successful, perform necessary actions (e.g., redirect to another page)
-                alert('Signup successful');
-                window.location.href = 'success.html';
-                } else {
-                // Signup failed, handle the error (e.g., display an error message)
-                alert('Signup failed');
-                }
-            })
-            .catch(function(error) {
-                // Handle any network or server errors
-                console.error('Error:', error);
-            });
-            }
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+        }
 
     </script>
 </body>

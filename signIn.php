@@ -1,50 +1,55 @@
 <?php
-// Establish database connection
-$servername = "your_servername";
-$username = "your_username";
-$password = "your_password";
-$dbname = " ";
+session_start();
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Check if the user is already logged in
+if (isset($_SESSION['username']) || isset($_SESSION['email'])) {
+    $_SESSION['isLogin'] = true; // Set the isLogin status to true
+    header("Location: dashboard.php");
+    exit;
+}
+
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "sovann_data";
+
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 
 // Retrieve form data
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username = isset($_POST['username']) ? $_POST['username'] : "";
+$password = isset($_POST['password']) ? $_POST['password'] : "";
 
 // Perform input validation
 if (empty($username) || empty($password)) {
-    die("Please fill in all fields");
+    echo "<script>alert('Please fill in all fields');</script>";
+    exit;
 }
 
-// Sanitize the input
-$username = mysqli_real_escape_string($conn, $username);
-$password = mysqli_real_escape_string($conn, $password);
-
 // Check if the user exists in the database
-$sql = "SELECT * FROM users WHERE email = '$username' OR username = '$username'";
-$result = $conn->query($sql);
+$query = "SELECT * FROM users WHERE (email = '$username' OR username = '$username')";
+$result = mysqli_query($conn, $query);
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
+if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $hashed_password = $row['password'];
+
     // Verify the password
-    if (password_verify($password, $row['password'])) {
-        // Password is correct, user is logged in
-        echo "Login successful";
-        // Redirect to the desired page after successful login
-        // header("Location: dashboard.php");
-        // exit();
+    if (password_verify($password, $hashed_password)) {
+        $_SESSION['username'] = $row['username'];
+        // Redirect to the dashboard
+        header("Location: dashboard.php");
+        exit;
     } else {
-        // Invalid password
-        echo "Invalid password";
+        echo "<script>alert('Invalid username or password');</script>";
     }
 } else {
-    // User does not exist
-    echo "User does not exist";
+    echo "<script>alert('User does not exist');</script>";
 }
 
 // Close database connection
-$conn->close();
+mysqli_close($conn);
 ?>

@@ -1,53 +1,51 @@
 <?php
-// Establish database connection
-$servername = "your_servername";
-$username = "your_username";
-$password = "your_password";
-$dbname = "your_database";
+session_start();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "sovann_data";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 // Retrieve form data
-$full_name = $_POST['full_name'];
-$email = $_POST['email'];
-$password = $_POST['password'];
-$com_password = $_POST['com_password'];
+$full_name = isset($_POST['full_name']) ? $_POST['full_name'] : "";
+$email = isset($_POST['email']) ? $_POST['email'] : "";
+$username = isset($_POST['username']) ? $_POST['username'] : "";
+$password = isset($_POST['password']) ? $_POST['password'] : "";
 
 // Perform input validation
-if (empty($full_name) || empty($email) || empty($password) || empty($com_password)) {
+if (empty($full_name) || empty($email) || empty($username) || empty($password)) {
     die("Please fill in all fields");
 }
 
-if ($password !== $com_password) {
-    die("Passwords do not match");
-}
-
-// Sanitize the input
-$full_name = mysqli_real_escape_string($conn, $full_name);
-$email = mysqli_real_escape_string($conn, $email);
-
 // Check if the user already exists
-$sql = "SELECT * FROM users WHERE email = '$email'";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("SELECT * FROM users WHERE email = ? OR username = ?");
+$stmt->bind_param("ss", $email, $username);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    die("User already exists");
-}
-
-// Hash the password
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-// Insert data into the database
-$sql = "INSERT INTO users (full_name, email, password) VALUES ('$full_name', '$email', '$hashed_password')";
-if ($conn->query($sql) === TRUE) {
-    echo "Registration successful";
+    echo "User already exists";
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    // Hash the password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Prepare and execute the SQL statement
+    $stmt = $conn->prepare("INSERT INTO users (full_name, email, username, password) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $full_name, $email, $username, $hashed_password);
+
+    if ($stmt->execute()) {
+        echo '<script>window.location.href = "index.php";</script>';
+        exit;
+    } else {
+        echo "Error: " . $stmt->error;
+    }
 }
 
 // Close database connection
+$stmt->close();
 $conn->close();
 ?>
